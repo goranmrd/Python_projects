@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+Age Calculator App
+Created on Thu Dec 07 10:24:14 2017
+
+@author: Goran
+"""
+
 from PIL import Image, ImageTk
 import datetime
 import tkinter as tk
