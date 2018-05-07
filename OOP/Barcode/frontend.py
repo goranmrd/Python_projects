@@ -3,8 +3,11 @@ from PIL import Image, ImageTk
 from backend import Database
 import sqlite3
 from tkinter.messagebox import showerror
+
+# Creating object from the class Database imported from backend
 database = Database('pacienti')
 
+# Function to center toplevel windows
 def center(toplevel):
     toplevel.update_idletasks()
     w = toplevel.winfo_screenwidth()
@@ -14,74 +17,61 @@ def center(toplevel):
     y = h / 2 - size[1] / 2
     toplevel.geometry("%dx%d+%d+%d" % (size + (x, y)))
 
+# Master class
 class Root:
+    
+    
     def __init__(self, window):
         self.pad = 3
         self.window = window
-        #self.window.configure(background="#3a4351")
         self.window.configure(background="white")
         self.window.grid_columnconfigure(0, weight=1)
         self.window.iconbitmap(default='Card.ico')
-        #self.window.grid_rowconfigure(0, weight=1)
-        # self.window.overrideredirect(True)
-        # self.window.overrideredirect(False)
         self.window.attributes('-fullscreen', True)
-        # self.window.update_idletasks()
         self.window.title('Customer points.')
         large_font = ('Verdana', 30)
+        
         w = self.window.winfo_screenwidth()
         h = self.window.winfo_screenheight()
-        print(w,h)
-        # self.w = window.winfo_screenwidth() + self.pad
-        # self.h = window.winfo_screenheight() + self.pad
-        # print(self.w,self.h)
-        # self.window.geometry("{}x{}".format(self.w,self.h))
-
-
-
-
-
-        self.frame3 = tk.Frame(self.window, bg='white')
-        self.frame3.grid(row=0, column=0)
+        # Frame no.1
+        self.frame = tk.Frame(self.window, bg='white')
+        self.frame.grid(row=0, column=0)
 
         # insert image
-
-        # image.thumbnail((300, 300), Image.ANTIALIAS)
-        #self.img = ImageTk.PhotoImage(Image.open("beltone.png"))
         image = Image.open("beltone2.jpg")
         if h < 1080:
             image = image.resize((600, 200), Image.ANTIALIAS)
         else:
             image = image.resize((900, 300), Image.ANTIALIAS)  # The (250, 250) is (height, width)
         self.pic = ImageTk.PhotoImage(image)
-        label_image = tk.Label(self.frame3, image=self.pic)
+        label_image = tk.Label(self.frame, image=self.pic)
         label_image.grid(row=1, column=0, pady=30)
+        # Frame no.2
+        self.frame2 = tk.Frame(self.window, bg='white')
+        self.frame2.grid(row=1, column=0)
 
-        self.frame4 = tk.Frame(self.window, bg='white')
-        self.frame4.grid(row=1, column=0)
-
-
-        labell = tk.Label(self.frame4, text='Barcode:', font='Verdana 28 bold', bg='white', fg='blue')
+        labell = tk.Label(self.frame2, text='Barcode:', font='Verdana 28 bold', bg='white', fg='blue')
         labell.grid(row=0, column=1)
 
         large_font = ('Verdana', 30)
-        self.frame5 = tk.Frame(self.window, bg='white')
-        self.frame5.grid(row=2, column=0, pady=80, padx=30)
-        self.entry_label = tk.Entry(self.frame4, font=large_font)
+        # Frame no.3
+        self.frame3 = tk.Frame(self.window, bg='white')
+        self.frame3.grid(row=2, column=0, pady=80, padx=30)
+        self.entry_label = tk.Entry(self.frame2, font=large_font)
         self.entry_label.grid(row=0, column=2)
         self.entry_label.focus()
-        self.button = tk.Button(self.frame4, text='Submit', font='Verdana 19 bold', command=self.search)
+        self.button = tk.Button(self.frame2, text='Submit', font='Verdana 19 bold', command=self.search)
         self.button.grid(row=0, column=3)
 
-        label_id = tk.Label(self.frame5, text='Id', width=10, font='Verdana 22', bg='white', fg='black',borderwidth=2, relief="raised")
+        label_id = tk.Label(self.frame3, text='Id', width=10, font='Verdana 22', bg='white', fg='black',borderwidth=2, relief="raised")
         label_id.grid(row=0, column=0)
-        label_name = tk.Label(self.frame5, text='Name', width=23, font='Verdana 22',bg='white', fg='black', borderwidth=2, relief="raised")
+        label_name = tk.Label(self.frame3, text='Name', width=23, font='Verdana 22',bg='white', fg='black', borderwidth=2, relief="raised")
         label_name.grid(row=0, column=1)
-        label_city = tk.Label(self.frame5, text='City', width=13 ,font='Verdana 22', bg='white', fg='black', borderwidth=2, relief="raised")
+        label_city = tk.Label(self.frame3, text='City', width=13 ,font='Verdana 22', bg='white', fg='black', borderwidth=2, relief="raised")
         label_city.grid(row=0, column=2)
-        label_phone = tk.Label(self.frame5, text='Phone', width=15, font='Verdana 22', bg='white', fg='black', borderwidth=2, relief="raised")
+        label_phone = tk.Label(self.frame3, text='Phone', width=15, font='Verdana 22', bg='white', fg='black', borderwidth=2, relief="raised")
         label_phone.grid(row=0, column=3)
-        label_points = tk.Label(self.frame5, text='Points', width=15, font='Verdana 22', bg='white', fg='black', borderwidth=2, relief="raised")
+        label_points = tk.Label(self.frame3, text='Points', width=15, font='Verdana 22', bg='white', fg='black', borderwidth=2, relief="raised")
         label_points.grid(row=0, column=4)
 
         self.ID = ''
@@ -91,48 +81,48 @@ class Root:
         self.PHONE = ''
         self.POINTS = ''
 
-        self.label_id2 = tk.Label(self.frame5, text=self.ID, font='Verdana 22', bg='white', fg='blue')
+        self.label_id2 = tk.Label(self.frame3, text=self.ID, font='Verdana 22', bg='white', fg='blue')
         self.label_id2.grid(row=1, column=0, pady=20)
-        self.label_name2 = tk.Label(self.frame5, text=self.NAME, font='Verdana 22', bg='white', fg='blue')
+        self.label_name2 = tk.Label(self.frame3, text=self.NAME, font='Verdana 22', bg='white', fg='blue')
         self.label_name2.grid(row=1, column=1, pady=20)
-        self.label_city2 = tk.Label(self.frame5, text=self.CITY, font='Verdana 22', bg='white', fg='blue')
+        self.label_city2 = tk.Label(self.frame3, text=self.CITY, font='Verdana 22', bg='white', fg='blue')
         self.label_city2.grid(row=1, column=2, pady=20)
-        self.label_phone2 = tk.Label(self.frame5, text=self.PHONE, font='Verdana 22', bg='white', fg='blue')
+        self.label_phone2 = tk.Label(self.frame3, text=self.PHONE, font='Verdana 22', bg='white', fg='blue')
         self.label_phone2.grid(row=1, column=3, pady=20)
-        self.label_points2 = tk.Label(self.frame5, text=self.POINTS, font='Verdana 31 bold', bg='white', fg='green',width=9, borderwidth=3, relief="groove")
+        self.label_points2 = tk.Label(self.frame3, text=self.POINTS, font='Verdana 31 bold', bg='white', fg='green',width=9, borderwidth=3, relief="groove")
         self.label_points2.grid(row=1, column=4)
 
-        self.button_add_points = tk.Button(self.frame5, text='Add Points', width=10, font='Verdana 19', bg='#31d82b',command=self.points)
+        self.button_add_points = tk.Button(self.frame3, text='Add Points', width=10, font='Verdana 19', bg='#31d82b',command=self.points)
         self.button_add_points.grid(row=2, column=4)
-        self.button_add_points = tk.Button(self.frame5, text='Reset Points', width=10, font='Verdana 19',
+        self.button_add_points = tk.Button(self.frame3, text='Reset Points', width=10, font='Verdana 19',
                                            command=self.reset)
         self.button_add_points.grid(row=3, column=4)
-        # New Frame
-        self.frame6 = tk.Frame(self.window, bg='white')
+        # Frame no.4
+        self.frame4 = tk.Frame(self.window, bg='white')
         if h < 1080:
-            self.frame6.grid(row=3, column=0, pady=30, padx=30)
+            self.frame4.grid(row=3, column=0, pady=30, padx=30)
         else:
-            self.frame6.grid(row=3, column=0, pady=80, padx=30)
-        self.button_add_pat = tk.Button(self.frame6, text='Add Patient', width=12, font='Verdana 19', command=self.add_patient)
+            self.frame4.grid(row=3, column=0, pady=80, padx=30)
+        self.button_add_pat = tk.Button(self.frame4, text='Add Patient', width=12, font='Verdana 19', command=self.add_patient)
         self.button_add_pat.grid(row=0, column=0)
-        self.button_edit_pat = tk.Button(self.frame6, text='Edit Patient', width=12, font='Verdana 19', command=self.edit_patient)
+        self.button_edit_pat = tk.Button(self.frame4, text='Edit Patient', width=12, font='Verdana 19', command=self.edit_patient)
         self.button_edit_pat.grid(row=0, column=1)
-        self.button_delete = tk.Button(self.frame6, text='Delete Patient', width=12, font='Verdana 19', bg='#ff3b38', command=self.delete_patient)
+        self.button_delete = tk.Button(self.frame4, text='Delete Patient', width=12, font='Verdana 19', bg='#ff3b38', command=self.delete_patient)
         self.button_delete.grid(row=1, column=1)
-        self.button_view = tk.Button(self.frame6, text='View All', width=12, font='Verdana 19',
+        self.button_view = tk.Button(self.frame4, text='View All', width=12, font='Verdana 19',
                                        command=self.view)
         self.button_view.grid(row=1, column=0)
         self.window.bind('<Escape>', self.quit)
         self.window.bind('<Return>', self.search)
-
+        
+        
+    # Method to view all patients from Database with scrollbar
     def view(self):
         pat = database.view()
-        print(pat)
+        # print(pat)
         self.items_win = tk.Toplevel(self.window, bg='white')
         self.items_win.title('View Patients')
         self.items_win.geometry("1413x600")
-        # self.items_win.grid_columnconfigure(0, weight=1)
-        # self.items_win.grid_rowconfigure(0, weight=1)
         self.items_win.focus_set()
         self.items_win.grab_set()
         center(self.items_win)
@@ -192,11 +182,17 @@ class Root:
             self.label_phone3.grid(row=i+1, column=5, pady=3)
             self.label_points3 = tk.Label(self.aframe, text=self.POINTS, font='Verdana 22 bold', bg='white', fg='blue')
             self.label_points3.grid(row=i+1, column=6)
+            
         self.aframe.update_idletasks()
         self.canvas.configure(scrollregion=(1, 1, self.aframe.winfo_width(), self.aframe.winfo_height()))
         self.items_win.bind('<Escape>',self.quit_view)
+        
+        
+    # Method to exit view window
     def quit_view(self, event=None):
         self.items_win.destroy()
+        
+        
     def add_patient(self, event=None):
         #Toplevel window
         self.items_win = tk.Toplevel(self.window, bg='white')
@@ -245,6 +241,7 @@ class Root:
         self.button2.grid(row=3, column=2, padx=(0,40), pady=15)
         self.items_win.bind('<Return>', self.add_button)
         
+        
     def add_button(self, event=None):
         barcode = self.barcode_entry.get()
         name = self.name_entry.get()
@@ -259,6 +256,7 @@ class Root:
     def quit(self,event=None):
         self.window.destroy()
 
+        
     def search(self, event=None):
         self.query = self.entry_label.get()
         print(type(self.query))
@@ -294,6 +292,7 @@ class Root:
             self.POINTS = ''
             self.label_points2.configure(text=self.POINTS)
 
+            
     def edit_patient(self, event=None):
         self.NAME = self.label_name2.cget('text')
         if len(self.NAME) > 1:
@@ -359,6 +358,7 @@ class Root:
         else:
             showerror('Search first!', 'You need to search first!')
 
+            
     def edit(self, event=None):
         self.ID = self.label_id2.cget('text')
         self.BARCODE = self.barcode_entry.get()
@@ -370,6 +370,7 @@ class Root:
         self.search()
         self.items_win1.destroy()
 
+        
     def points(self, event=None):
         self.BARCODE = self.entry_label.get()
         if len(self.BARCODE) > 1:
@@ -430,9 +431,6 @@ class Root:
         else:
             showerror('No points!', 'Patient have no points!')
         
-
-        
-
 
     def add(self, event=None):
         self.num = self.points_entry.get()
